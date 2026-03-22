@@ -34,69 +34,6 @@ import bpy
 from bpy.types import Operator, UIList, PropertyGroup, Panel, Scene
 from bpy.props import StringProperty, IntProperty, CollectionProperty, EnumProperty, PointerProperty, BoolProperty
 import os
-import platform
-
-plat = platform.system().lower()
-if plat == "windows":
-    FontFolder = os.getenv("SystemRoot") + "\\Fonts"
-elif plat == "linux":
-    FontFolder = "/usr/share/fonts"
-else:
-    FontFolder = "/System/Library/Fonts"
-    
-filterFont = ["AIGDT___.TTF", ]
-def getFonts():
-    # filters = [".fon"] # 过滤的fbx文件
-    enum_fonts_list = []
-    list = os.listdir(FontFolder)
-
-    for i in list:
-        count = 0
-        path = os.path.join(FontFolder,i)
-        if os.path.isfile(path):
-            fileExtension = os.path.splitext(path)[-1].lower()
-            if fileExtension != ".fon":
-                id = str(i)
-                name = str(i[:-4])
-                description = str(i)
-                enum_fonts_list.append((id, name, description))
-
-                count += 1
-
-    return enum_fonts_list
-    
-fonts = getFonts()
-
-class REDHALO_OT_SetFont(Operator):
-    """ Set Font """
-    bl_idname = "redhalo.select_font"
-    bl_label = "Select Font"
-    bl_property = "font_list"
-
-
-    font_list : EnumProperty(
-        items = fonts
-    )
-
-    def execute(self, context):
-        fontName = self.font_list
-        fontPath = os.path.join(FontFolder, fontName)
-        font = bpy.data.fonts.load(filepath=fontPath)
-
-        allFonts = bpy.data.fonts
-
-        for f  in range(len(allFonts)):
-            if allFonts[f].name == font.name:
-                bpy.context.active_object.data.font = allFonts[f]
-            else:
-                bpy.context.active_object.data.font = font
-
-        return {'FINISHED'}
-    
-    def invoke(self, context, event):
-        wm = context.window_manager
-        wm.invoke_search_popup(self)
-        return {'FINISHED'}
 
 class Tools_OT_insertNewline(Operator):
     bl_idname = "redhalo.insert_newline"
@@ -106,27 +43,6 @@ class Tools_OT_insertNewline(Operator):
 
     def execute(self, context):
         bpy.context.active_object.data.body += "\n"
-        return {'FINISHED'}
-
-class Tools_OT_setFont(Operator):
-    bl_idname = "redhalo.set_font"
-    bl_label = "修改字体"
-    bl_description = "设置为思源黑体"
-    bl_options = {'REGISTER', 'UNDO'} 
-
-    def execute(self, context):
-        addonPath = os.path.dirname(__file__)
-        fontName = "SourceHanSansCN-Normal.otf"
-        fontPath = os.path.join(addonPath,fontName)
-        font = bpy.data.fonts.load(filepath=fontPath)
-
-        allFonts = bpy.data.fonts
-
-        for f  in range(len(allFonts)):
-            if allFonts[f].name == font.name:
-                bpy.context.active_object.data.font = allFonts[f]
-            else:
-                bpy.context.active_object.data.font = font
         return {'FINISHED'}
 
 class Tools_OT_VerticalText(Operator):
@@ -240,26 +156,16 @@ class RD_PT_TextValue(Panel):
         layout = self.layout
 
         scene = context.scene
-        fontname = context.active_object.data.font.name
 
         obj = context.object
         row = layout.row()
         row.prop(obj.data, "body", text="", icon="OUTLINER_OB_FONT",expand =True )
         row = layout.row()
         row.operator("redhalo.insert_newline", icon = "CHECKMARK")
-        # row.operator("redhalo.set_font", icon = "FILE_FONT")
-        # row = layout.row()
         row.operator("redhalo.set_vertical", icon = "DRIVER_ROTATIONAL_DIFFERENCE")
-
-        #Font List
-        row = layout.row()
-        # row.template_list("REDHALO_UL_TextMain", "LIST", scene, "my_list", scene, "list_index")
-        row.operator("redhalo.select_font", text = "当前：%s ,点击选择字体" % fontname)
         
 classes = (
-    REDHALO_OT_SetFont,
     Tools_OT_insertNewline,
-    Tools_OT_setFont,
     Tools_OT_VerticalText,
     REDHALO_UL_TextMain,
     RD_PT_TextValue
