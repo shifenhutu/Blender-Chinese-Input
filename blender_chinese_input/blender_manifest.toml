@@ -1,0 +1,12 @@
+schema_version = "1.0.0"
+id = "blender_chinese_input"
+name = "0__ blender 中文输入"
+version = "1.1.4"
+tagline = "方便输入中文"
+maintainer = "maylog"
+type = "add-on"
+tags = ["Animation"]
+blender_version_min = "4.2.0"
+license = ["SPDX:GPL-3.0-or-later"]
+website = "https://github.com/shifenhutu/blender-chinese-input"
+ 
