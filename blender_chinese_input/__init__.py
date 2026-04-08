@@ -17,18 +17,7 @@ Created by Red Halo Studio(发霉的红地蛋)
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-bl_info = {  
-    "name": "Text Input",  
-    "author": "Red Halo Studio",  
-    "version": (0, 2),  
-    "blender": (2, 80, 0),  
-    "location": "Properties > Font > Text Value",  
-    "description": "解决Window下无法输入中文的问题",  
-    "wiki_url": "",  
-    "tracker_url": "",  
-    "category": "RedHaloTools"
- }
-
+ 
 from typing import Collection
 import bpy
 from bpy.types import Operator, UIList, PropertyGroup, Panel, Scene

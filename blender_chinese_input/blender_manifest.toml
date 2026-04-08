@@ -6,6 +6,7 @@ tagline = "方便输入中文"
 maintainer = "maylog"
 type = "add-on"
 tags = ["Animation"]
+location = "Properties > Font > Text Value"
 blender_version_min = "4.2.0"
 license = ["SPDX:GPL-3.0-or-later"]
 website = "https://github.com/shifenhutu/blender-chinese-input"
